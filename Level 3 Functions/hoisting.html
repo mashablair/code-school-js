@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hoisting at Code School</title>
+</head>
+<body>
+
+<h1>Hoisting</h1>
+
+<p>First, memory is set aside for all necessary variables and declared functions.</p>
+
+<script>
+
+// in this example, both functions get hoisted but the first one gets overriden by the second function. So the first one is gone.
+
+function getMysteryNumber() {
+    function chooseMystery() { // this function will disappear when compiler runs code
+        console.log(12);
+        return 12;
+    }
+
+    return chooseMystery();
+
+    function chooseMystery() {
+        console.log(7);
+        return 7;
+    }
+}
+
+getMysteryNumber(); // --> 7
+
+</script>
+
+<p>Function expressions are never hoisted!</p>
+
+<script>
+
+function getMysteryNumber2() {
+    var chooseMystery2 = function() { // this var gets hoisted, but not the function
+        console.log(12);
+        return 12;
+    };
+
+    return chooseMystery2(); // after both vars are hoisted, this is executed with the 1st function available.  And the code stops here.
+
+    var chooseMystery2 = function() { // this var also gets hoisted w/o the function, and overrides the 1st var
+        console.log(7);
+        return 7;
+    }
+}
+
+getMysteryNumber2(); // --> 12
+
+// Here is an example, where hoisting will produce error:
+
+// function capacityStatus(numPassengers, capacity) {
+//     if (numPassengers == capacity) {
+//         noSeats(); // this function is defined as a function later, and JS doesn't see it yet
+//     } else {
+//         seatAvail();
+//     }
+
+//     var noSeats = function() { // this var gets hoisted
+//         console.log('No seats left!');
+//         return false;
+//     };
+//     var seatAvail = function() { // this var gets hoisted
+//         console.log('There are ' + capacity - numPassengers + ' left.');
+//         return true;
+//     }
+// }
+
+// capacityStatus(60, 60); // --> error: noSeats is not a function!
+
+// rearranging the order will fix this problem:
+function capacityStatus(numPassengers, capacity) {
+    var noSeats = function() { // the vars are hoisted and then assigned immediately below:
+        console.log('No seats left!');
+        return false;
+    };
+    var seatAvail = function() {
+        console.log('There are ' + (capacity - numPassengers) + ' seats left.');
+        return true;
+    };
+    if (numPassengers == capacity) {
+        noSeats();
+    } else {
+        seatAvail();
+    }
+}
+
+capacityStatus(60, 60); // --> error: noSeats is not a function!
+
+// Here is how we can fix it -- 2nd version:
+
+function capacityStatus2(numPassengers, capacity) {
+    if (numPassengers == capacity) {
+        return function noSeats2() {
+            console.log('No seats left!');
+        }
+    } else {
+        return function seatAvail2() {
+            console.log('There are ' + (capacity - numPassengers) + ' seats left.');
+        }
+    }
+}
+
+capacityStatus2(60, 60)(); // --> error: noSeats is not a function!
+
+// And the 3rd way to fix it:
+function capacityStatus3(numPassengers, capacity) {
+    if (numPassengers == capacity) {
+        noSeats3();
+    } else {
+        seatAvail3();
+    }
+
+    function noSeats3() {
+        console.log('No seats left!');
+        return false;
+    }
+    function seatAvail3() {
+        console.log('There are ' + (capacity - numPassengers) + ' seats left.');
+        return true;
+    }
+}
+
+capacityStatus3(20, 60);
+
+
+
+
+
+// More exercises:
+
+function thisIsWeird() {
+  var result;
+  function secret() {
+    var unused3;
+  }
+
+  function secret() {
+    var unused1;
+  }
+
+  function secret() {
+    var unused2;
+  }
+  // The following line of code assigns a
+  // secret function to the variable result.
+  result = secret;
+  console.log(result);
+  return result;
+}
+
+thisIsWeird();
+
+// load order exercise:
+function theBridgeOfHoistingDoom() {
+  var ring = undefined;
+  var power = undefined;
+  function balrog() {
+    return "whip";
+  }
+  function wizard() {
+    return "white";
+  }
+  function elf() {
+    return "immortal";
+  }
+  ring = wizard;
+  wizard = balrog;
+  console.log(wizard);
+  return wizard();
+
+  // everything after this line should be deleted b/c JS compiler simply ignores it. It's unreachable.
+}
+
+theBridgeOfHoistingDoom();
+}
+
+theBridgeOfHoistingDoom();
+
+
+
+</script>
+
+
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
