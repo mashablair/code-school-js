@@ -8,6 +8,7 @@
 
 <h1>Hoisting</h1>
 
+<h3>This exercises are from here: <a>http://javascriptissexy.com/javascript-variable-scope-and-hoisting-explained/</a></h3>
 <p>Hoisting is the load order. </p>
 <p>The scope specifies from where you can access a variable and whether you have access to the variable in that context.</p>
 
@@ -42,6 +43,8 @@ someNumber(); // --> 10
 </script>
 
 <p>Always declare your local variables, otherwise they become global!</p>
+
+<p>Use this tool to check your JS syntax: http://jshint.com/</p>
 
 <script>
 
@@ -90,13 +93,57 @@ myObj.calculateIt2(); // --> 20
 
 <p>All variable declarations are hoisted (lifted and declared) to the top of the function, if defined in a function, or the top of the global context, if outside the function.</p>
 
-<p>But!  Only variable declarations are hoisted to the top, not variable initialization or assignment.</p>
+<p>But!  Only variable declarations are hoisted to the top, not variable initialization or assignment. Tricky!</p>
 
 <script>
 
-function showName()
+function showName() {
+    // var myName = "Masha";
+    console.log('First Name: ' + myName); // --> undefined b/c only declaration was hoisted, not the assignment
+    var myName = "Masha"; // assignment to value Masha happens only here
+    console.log('Last Name: ' + myName); // --> Masha
+}
+
+showName();
+
+// it's the same as this function:
+
+function showName2() {
+    var myName2;
+    console.log('First Name: ' + myName2);
+    myName2 = 'Sophie';
+    console.log('Last Name: ' + myName2);
+}
+showName2();
 
 </script>
+
+<h2>Function declaration overrides variable declaration when hoisted</h2>
+
+<p>Both are hoisted to the top, but function declaration takes precedence over variable declaration, but not over variable assignemnt.  Variable assignment is not hoisted, and neither is function assignment.</p>
+
+<script>
+
+var someName;
+function someName() {
+    console.log('Ninja');
+}
+
+console.log(typeof someName); // --> function
+
+// BUT!  if you assign value to var, it will override the function declaration:
+
+var someName2 = 'Ninja';
+function someName2() {
+    console.log('Hello, Ninja!');
+}
+console.log(typeof someName2); // --> string
+
+</script>
+
+<p>Function expressions are NOT hoisted!</p>
+
+<p>In strict mode, an error will occur if you assign a variable a value without first declaring the variable.  Always declare your vars!</p>
 
 </body>
 </html>
