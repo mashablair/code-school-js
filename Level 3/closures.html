@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Closures</title>
+</head>
+<body>
+
+<h1>Closures</h1>
+<h2>Closures help in function "Construction Zones".</h2>
+<p>A closure can make the creation of very similar functions ultra-efficient.</p>
+
+
+<script>
+
+function testClosure() {
+    var x = 4;
+    function closeX() {
+        return x; // it sees the value of x outside above
+    }
+    return closeX;
+}
+
+var checkLocalX = testClosure();
+checkLocalX();
+
+// 3 new rides:
+function buildCoveTicketMaker(transport) {
+    return function(name) {
+        console.log("Here is your ticket for the " + transport + ".\n" + "Welcome, " + name + "!");
+    }
+}
+
+var submarine = buildCoveTicketMaker("Submarine");
+var battleship = buildCoveTicketMaker("Battleship");
+var giantSeagull = buildCoveTicketMaker("Giant Seagull");
+
+submarine('Sophie');
+
+
+// Tracing a Closure:
+function mystery() {
+  var secret = 6;
+  function mystery2(multiplier) {
+    multiplier = multiplier * 3; // 9
+    return secret * multiplier; // 6*9 = 54
+  }
+  return mystery2; // --> 54
+}
+
+var hidden = mystery(); // -->
+var result = hidden(3);
+console.log(result);
+
+// Think about what happens in the last step, when hidden is passed a value. Where does that go? Also look closely at mystery2. Something happens to the parameter it gets before a final result is returned.
+
+function mystery(input) {
+  var secret = 5;
+  function mystery2(multiplier) {
+    multiplier = multiplier * input;
+    return secret * multiplier;
+  }
+  return mystery2;
+}
+
+var hidden = mystery(4);
+
+var result = hidden(2); // --> 40
+
+// tough one!
+function mystery(input) {
+  var secret = 4;
+  input += 2;
+  function mystery2(multiplier) {
+    multiplier *= input;
+    return secret * multiplier;
+  }
+  return mystery2;
+}
+
+function mystery3(param) {
+  function mystery4(bonus) {
+    return param(6) + bonus;
+  }
+  return mystery4;
+}
+
+
+var hidden = mystery(3); // --> mystery function where input = 3
+
+function mystery(input) {
+  var secret = 4;
+  input = 3 + 2; // input = 5
+  function mystery2(multiplier) {
+    multiplier = 6 * 5; // = 30
+    return 4 * 30; // = 120
+  }
+  return mystery2;
+}
+
+function mystery3(param) {
+  function mystery4(bonus) {
+    return 120 + 2; // --> 122
+  }
+  return mystery4;
+}
+
+var jumble = mystery3(hidden); // --> 24
+var result = jumble(2); // --> 122
+
+
+// Building a Closure
+// function warningMaker(obstacle) {
+//   return function() { alert('Beware! There have been ' + obstacle + ' sightings in the Cove today!'); };
+// }
+
+function warningMaker(obstacle) {
+  return function(number, location) { // set parameters
+    console.log("Beware! There have been " + obstacle +
+          " sightings in the Cove today!\n" + number + " have been spotted at the " + location + "!");
+    };
+}
+
+var message = warningMaker("Dino");
+message(5, "Sacramento");
+
+
+// Modifying Bound Values after Closure:
+function buildCoveTicketMaker1(transport) {
+    var passengerNumber = 0;
+    return function(name) {
+        passengerNumber++;
+        console.log("Here is your transportation ticket via the " + transport + ".\n Welcome to the Cold Closures Cove, " + name + "!\n You are passenger No. " + passengerNumber + ".");
+    }
+}
+
+var getSubmarineTicket = buildCoveTicketMaker1("Submarine");
+getSubmarineTicket("Sophie");
+getSubmarineTicket("Masha");
+
+
+function warningMaker1(obstacle) {
+  var count = 0;
+  var zones = [];
+  return function(number, location) {
+    count++;
+    var list = "";
+    // add each location to the zones array
+    zones.push(location);
+    // add each zone to the list string
+    for (var i = 0; i < zones.length; i++) {
+        list = list + zones[i] + '\n';
+    }
+    console.log("Beware! There have been " + obstacle +
+          " sightings in the Cove today!\n" +
+          number + " have been spotted at the " +
+          location + "!\n" +
+          "This is alert #" + count +
+          " today for " + obstacle + " danger.\n" +
+          // finish the warning message here
+          "Current danger zones are:\n" + list);
+  };
+}
+
+var message = warningMaker1("Giant Bird");
+message(3, "Goleta");
+
+warningMaker1("Elmo")(10, "SB");
+
+// Well, it’s nice for new travelers to know where the danger zones are, but what if some of them are thrill-seekers? They might actually want to visit the zones that have the highest number of obstacles.
+
+// We already have a list of danger zones, and now the Dev Girls at the Cove want you to add a number alongside each of the locations.
+
+function warningMaker2(obstacle) {
+  var count = 0;
+  var zones = [];
+  return function(number, location) {
+    count++;
+    var list = "";
+    // push an array with location and number
+    zones.push([location, number]);
+    for (var i = 0; i < zones.length; i++) {
+      // replace location and number with appropriate code
+      list += zones[i][0] + " (" + zones[i][1] + ")" + "\n";
+    }
+    console.log("Beware! There have been " + obstacle +
+          " sightings in the Cove today!\n" +
+          number + " have been spotted at the " +
+          location + "!\n" +
+          "This is alert #" + count +
+          " today for " + obstacle + " danger.\n" +
+          "Current danger zones are:\n" +
+          list);
+  };
+}
+
+warningMaker2('Elmo')(2, 'Sesame Street');
+
+// Loops with Closures: a cautionary tale:
+// A passenger we want we get a torpedo assigned:
+function assignTorpedo(name, passengerArray) {
+    for (var i=0; i<passengerArray.length; i++) {
+        if (passengerArray[i] === name) {
+            return function() {
+                console.log('Ahoy, ' + name + '!\n' + 'Man your post at Torpedo #' + (i +1) + '!');
+            }
+        }
+    }
+}
+
+passengers = ['Masha', 'Elijah', 'Ale', 'Sophie'];
+assignTorpedo('Sophie', passengers)();
+
+// Don't do this!
+// function assignTorpedo(name, passengerArray) {
+//     var torpedoAssignment;
+//     for (var i=0; i<passengerArray.length; i++) {
+//         if (passengerArray[i] === name) {
+//             return function() {
+//                 console.log('Ahoy, ' + name + '!\n' + 'Man your post at Torpedo #' + (i +1) + '!');
+//             }
+//         }
+//     }
+//     return torpedoAssignment; // it will return the last i
+// }
+
+// Another way to do it:
+function assignTorpedo2 (passengerArray) {
+    return function(name) {
+        for (var i = 0; i < passengerArray.length; i++) {
+            if (passengerArray[i] === name) {
+                console.log('Ahoy, ' + name + '!\n' + 'Man your post at Torpedo #' + (i +1) + '!');
+            }
+        }
+    };
+}
+
+assignTorpedo2(passengers)('Elijah');
+
+// Another exercise for closures:
+function assignLaser(shark, sharkList) {
+  for (var i = 0; i < sharkList.length; i++) {
+    if (shark == sharkList[i]) {
+      return function() {
+        console.log("Yo, " + shark + "!\n" +
+              "Visit underwater strapping station " +
+              (i + 1) + " for your sweet laser.");
+      };
+    }
+  }
+}
+
+var sharks = ["Sea Pain", "Great Wheezy", "DJ Chewie",
+ "Lil' Bitey", "Finmaster Flex", "Swim Khalifa",
+ "Ice Teeth", "The Notorious J.A.W."];
+
+assignLaser("Great Wheezy", sharks)();
+
+// Now the Dev Girls need each shark to be matched with a corresponding target. A shark’s index in the listOfSharks array will match the index of the target that it is supposed to eliminate from listOfTargets.
+function makeTargetAssigner(sharks, targets) {
+  // insert your code here
+  return function(shark) {
+    for (var i = 0; i < sharks.length; i++) {
+        if (sharks[i] === shark) {
+            console.log("Hey, " + shark + "!\nThere've been " + targets[i] + " sightings in our area!\nTime to take care of business!");
+        }
+    }
+  };
+}
+
+var listOfSharks = ["Sea Pain", "Great Wheezy",
+                    "DJ Chewie", "Lil' Bitey",
+                    "Finmaster Flex", "Swim Khalifa",
+                    "Ice Teeth", "The Notorious J.A.W."];
+
+var listOfTargets = ["icicle bat", "snow yeti",
+                     "killer penguin", "frost tiger",
+                     "polar bear", "iceberg",
+                     "blue witch", "wooly mammoth"];
+
+var getTargetFor = makeTargetAssigner(listOfSharks, listOfTargets);
+getTargetFor("Ice Teeth");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

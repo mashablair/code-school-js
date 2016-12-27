@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hoisting</title>
+</head>
+<body>
+
+<h1>Hoisting</h1>
+
+<p>Hoisting is the load order. </p>
+<p>The scope specifies from where you can access a variable and whether you have access to the variable in that context.</p>
+
+<h2>Local Variabels (Function-level scope)</h2>
+<p>JS has function-level scope. Variables declared within a function are local variables and are only accessible within that function or by functions inside that function. </p>
+
+<h2>No Block-Lovel Scope</h2>
+<p>If statements don't create local scope. Vars introduced in if statements are global vars.</p>
+
+<script>
+var name = "Richard";
+
+if (name) {
+   name = "Jack"; // Jack is a global var
+   console.log(name); // --> Jack
+}
+
+console.log(name); // --> Jack
+
+// OR
+
+for (var i = 0; i<10; i++) { // this loop is a block!  It doesn't create a local scope.
+    console.log(i); // --> 1,2...,10
+}
+
+function someNumber() {
+    console.log(i); // is is a global var, so it's accessable by this function
+}
+
+someNumber(); // --> 10
+
+</script>
+
+<p>Always declare your local variables, otherwise they become global!</p>
+
+<script>
+
+// var name = "Jack";
+
+// function rename() {
+//     name = "Bill";
+//     console.log(name);
+// }
+
+// rename(); // if I run this function, both console.logs will produce Bill!  If I don't run this function, 2nd console.log will produce Jack, as expected.
+// console.log(name);
+
+</script>
+
+<p>Local variable has priority over global var in functions. </p>
+
+<p>If variable is initialized (assigned a value) but not declared with var keyword, it is automatically added to the global context and it's thus a global variable.</p>
+
+<p>All functions in setTimeout are executed in the global scope. It's tricky.  If you use 'this' there, it will refer to the global window object.</p>
+
+<script>
+
+var a = 200;
+var b = 1;
+var myObj = {
+    a: 10,
+    b: 2,
+    calculateIt: function() {
+        setTimeout(function() { // this function uses global vars
+            console.log(this.a * this.b); // --> 200
+        }, 2000);
+    },
+    calculateIt2: function() {
+        console.log(this.a * this.b); // --> 20
+    }
+};
+
+myObj.calculateIt(); // --> 200
+myObj.calculateIt2(); // --> 20
+
+
+</script>
+
+<h2>Hoisting</h2>
+
+<p>All variable declarations are hoisted (lifted and declared) to the top of the function, if defined in a function, or the top of the global context, if outside the function.</p>
+
+<p>But!  Only variable declarations are hoisted to the top, not variable initialization or assignment.</p>
+
+<script>
+
+function showName()
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

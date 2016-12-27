@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Function Expressions and Anonimous Functions</title>
+</head>
+<body>
+
+<script>
+
+var people = 5;
+var rain = 5;
+var sharks = 5;
+
+var fearGenerated = function(numPeeps, rainInInches, numSharks) {
+  var rainFear = numPeeps * rainInInches;
+  var sharkFear = numSharks * numSharks * numSharks;
+  var totalFear = sharkFear + rainFear;
+  console.log(totalFear);
+  return totalFear;
+};
+
+var fear = fearGenerated(people, rain, sharks);
+// fearGenerated(people, rain, sharks);
+
+// var fear = fearGenerated(numPeeps, rainInInches, numSharks);
+
+var fearMessage = function() {
+  var confirm;
+  // Insert conditional statements here
+  if (fear < 200) {
+    confirm = function() {
+      console.log('Fear Level: LOW. Still wanna Ride?');
+    };
+  } else if (fear >=200 && fear <= 300) {
+    confirm = function() {
+        console.log("Fear Level: MEDIUM. Think you'll make it?");
+    };
+  }
+    return confirm;
+};
+
+function confirmRide(confirmToGo) {
+  return confirmToGo();
+}
+
+// Call confirmRide with the fearMessage function
+var startRide = confirmRide(fearMessage);
+
+startRide(fearMessage);
+
+// The .map() method will always take in a function as a parameter, and return a new array with the results
+
+var numbers = [12,3,4,5,6,3,2,5];
+var results = numbers.map( function(arrayCell) { return arrayCell * 2; }); // short functions can be 1-lined
+
+console.log(results); // --> [24, 6, 8, 10, 12, 6, 4, 10]
+
+// map method includes a loop which we don't have to write out:
+// var results =[ ];
+// for (var i=0; i<numbers.length; i++) {
+//     results[i] = coolFunction(numbers[i]);
+// }
+
+var passengers = [ ["Thomas", "Meeks"],
+                   ["Gregg", "Pollack"],
+                   ["Christine", "Wong"],
+                   ["Dan", "McGaw"] ];
+var modifiedNames = passengers.map( function(arrayCell) { return arrayCell[0] + ' ' + arrayCell[1]; });
+
+console.log(modifiedNames);
+
+//
+
+var modifiedNames = [ "Thomas Meeks",
+                      "Gregg Pollack",
+                      "Christine Wong",
+                      "Dan McGaw" ];
+
+// var greeting = modifiedNames.map(function(arrayCell) { console.log('Yo, ' + arrayCell + '!'); });
+
+// console.log(greeting);
+
+modifiedNames.map(function(arrayCell) { console.log('Yo, ' + arrayCell + '!'); });
+
+var puzzlers = [
+  function(a) { return 3 * a - 8; },
+  function(a) { return (a + 2) * (a + 2) * (a + 2); },
+  function(a) { return a * a - 9; },
+  function(a) { return a % 4; }
+];
+
+
+// more example:
+var sweetAnnouncement = function() { console.log("ATTENTION!\n\n CUPCAKES. \n... THAT IS ALL.")};
+sweetAnnouncement();
+
+var fruits = ['apple', 'orange', 'pineapple', 'pear'];
+var fruitJuice = fruits.map(function(fruit) {
+    return "\n" + fruit + " juice";
+});
+
+console.log(fruitJuice);
+console.log(fruitJuice[0]);
+
+// Let's make some tickets:
+var parkRides = [
+    ['Birch Bumpers', 40],
+    ['Pines Ride', 55],
+    ['Cedar Ride', 20],
+    ['Fern Bump', 90]
+];
+
+var fastPassQueue = [ 'Cedar Ride', 'Birch Bumpers', 'Pines Ride', 'Cedar Ride' ];
+
+function buildTicket ( allRides, passRides, pick ) {
+    if (passRides[0] == pick) {
+        var pass = passRides.shift();
+        return function() {
+            console.log('Quick! You"ve got a Fast Pass to ' + pass + '!');
+        };
+    } else {
+        for (var i=0; i<allRides.length; i++) {
+            if (allRides[i][0] == pick) {
+                return function() {
+                    console.log("A ticket is printing for " + pick + "!\n Your wait time is about " + allRides[i][1] + " minutes.");
+                };
+            }
+        }
+    }
+}
+
+var wantRide = 'Birch Bumpers';
+var ticket = buildTicket( parkRides, fastPassQueue, wantRide);
+ticket(); // --> A ticket is printing for Birch Bumpers! Your wait time is about 40 minutes.
+
+console.log('\nOur fastPassQueue array is now: ' + fastPassQueue);
+
+var wantRide = 'Cedar Ride';
+var ticket = buildTicket( parkRides, fastPassQueue, wantRide);
+ticket(); // --> Quick! You"ve got a Fast Pass to Cedar Ride!
+
+console.log('\nOur fastPassQueue array is now: ' + fastPassQueue);
+
+var wantRide = 'Cedar Ride';
+var ticket = buildTicket( parkRides, fastPassQueue, wantRide);
+ticket(); // --> A ticket is printing for Cedar Ride! Your wait time is about 20 minutes.
+
+console.log('\nOur fastPassQueue array is now: ' + fastPassQueue); // --> Our fastPassQueue array is now: Birch Bumpers,Pines Ride,Cedar Ride
+
+var wantRide = 'Birch Bumpers';
+buildTicket( parkRides, fastPassQueue, wantRide ); // --> it returns the body of the function, so nothing happens. Because nothing calls the function that gets returned.
+buildTicket( parkRides, fastPassQueue, wantRide )(); // immediately invoked function!
+
+
+
+// Ash Adventures has three different “adventures” to choose from, and customers are prompted for a number at a terminal. The number is stored as userChoice and then passed into a function called adventureSelector.
+
+// Inside the function, you need to return an anonymous function based on the number that the user selected. Each of your three anonymous functions should contain a boarding alert message:
+console.log('ADVENTURE SELECTOR:\n')
+
+function adventureSelector(userChoice) {
+  // return anonymous functions inside conditional blocks
+    if (userChoice === 1) {
+        return function() {
+          console.log('You selected the Vines of Doom!');
+        };
+    } else if (userChoice === 2) {
+        return function() {
+          console.log('Looks like you want the Lake of Despair!');
+        };
+    } else if (userChoice === 3) {
+        return function() {
+          console.log('The Caves of Catastrophe!');
+        };
+    }
+}
+
+var userChoice = 1; // 1,2 or 3
+
+adventureSelector(userChoice)();
+
+// The devs at Poplar Puzzles would like you to treat an array of functions like a Queue, passing the result of each function into the next until the Queue is empty. They’ve sent you the puzzlers Queue of functions, and the following instructions:
+console.log('Queue Builder: ');
+
+var puzzlers = [
+  function(a) { return 8 * a - 10; },
+  function(a) { return (a - 3) * (a - 3) * (a - 3); },
+  function(a) { return a * a + 4; },
+  function(a) { return a % 5; }
+];
+var start = 2;
+
+// build applyAndEmpty function expression here
+var applyAndEmpty = function(input, queue) {
+    var length = queue.length; // 4
+    for (var i = 0; i < length; i++) {
+        // delete the first arrayCell using .shift method and call the cellArray function on that deleted function:
+        input = queue.shift()(input);
+    }
+    return input;
+};
+
+// alert(applyAndEmpty(start, puzzlers)); // --> 3
+// // alert(applyAndEmpty(start, puzzlers)); // --> 2
+// console.log(puzzlers);
+
+// Cool tool to uglify JS!  https://skalman.github.io/UglifyJS-online/
+// var applyAndEmpty=function(n,r){for(var t=r.length,o=0;t>o;o++)n=r.shift()(n);return n};console.log(puzzlers);
+
+
+//Now the Poplar Puzzle-makers have sent you a puzzle with a new set of functions to use on that puzzle. To display your overwhelming array and function expression mastery, alert the answer to the following question:
+
+//“What is obtained when the result of passing 9 into the fourth function of the puzzlers array is then passed into the function whose array index matches the result of passing 3 into the second function of the puzzlers array?”
+alert(puzzlers[puzzlers[1](3)](puzzlers[3](9)));
+
+console.log(puzzlers[0](4)); // 8 * 4 - 10 = 22
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
