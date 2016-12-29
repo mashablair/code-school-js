@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prototypes</title>
+</head>
+<body>
+<h1>Prototypes!</h1>
+
+<script>
+
+var witch = "I'll get you, my pretty...and your little dog, goo!";
+var glinda = "Be gone! Before someone drops a house on you!";
+
+String.prototype.countAll = function(letter) {
+    var letterCount = 0;
+    for (var i = 0; i < this.length; i++) {
+        if (this.charAt(i).toUpperCase() === letter.toUpperCase()) {
+            letterCount++;
+        }
+    }
+    console.log("This string has: " + letterCount + " letter(s) " + letter + ".");
+    return letterCount;
+}
+
+witch.countAll("g");
+
+// Exercises:
+var canyonCows = [
+  {name: "Bessie", type: "cow", hadCalf: "Burt"},
+  {name: "Donald", type: "bull", hadCalf: null},
+  {name: "Esther", type: "calf", hadCalf: null},
+  {name: "Burt", type: "calf", hadCalf: null},
+  {name: "Sarah", type: "cow", hadCalf: "Esther"},
+  {name: "Samson", type: "bull", hadCalf: null},
+  {name: "Delilah", type: "cow", hadCalf: null}
+];
+
+Array.prototype.countCattle = function(kind) {
+    var numKind = 0;
+    for (var i=0; i < this.length; i++) {
+        if (this[i].type === kind) {
+            numKind++;
+        }
+    }
+    console.log(numKind);
+    return numKind;
+};
+
+canyonCows.countCattle("calf");
+canyonCows.countCattle("bull");
+
+console.log(canyonCows.countCattle('calf') + canyonCows.countCattle('bull') + canyonCows.countCattle('cow'));
+
+// To let mother cows rest:
+// in this array of objects, we want to find cows that didn't have calves yet:
+var forestCows = [
+  {name: "Legolas", type: "calf", hadCalf: null},
+  {name: "Gimli", type: "bull", hadCalf: null},
+  {name: "Arwen", type: "cow", hadCalf: null},
+  {name: "Galadriel", type: "cow", hadCalf: null},
+  {name: "Eowyn", type: "cow", hadCalf: "Legolas"}
+];
+
+// first we create a helper function and add it to the Object prototype to save memory space:
+Object.prototype.noCalvesYet = function() {
+    if (this.type === "cow" && this.hadCalf === null) {
+        return true;
+    }
+    return false;
+};
+
+// then we create the main function which is added to all arrays:
+Array.prototype.countForBreeding = function() {
+    var numToBreed = 0;
+    for (var i = 0; i < this.length; i++) {
+        // since functions in JS are 1st class values, we can use this syntaxt!
+        // here we are checking the objects in array:
+        if (this[i].noCalvesYet()) {
+            numToBreed++;
+        }
+    }
+    console.log(numToBreed);
+    return numToBreed;
+};
+
+forestCows.countForBreeding();
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

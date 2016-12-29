@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Objects -- Intro</title>
+</head>
+<body>
+
+<h1>Objects</h1>
+
+<script>
+
+// the easiest way to creat object is literal notation:
+// if I want my object to accept vars, I must declare and assign my var in the beginning:
+var booksArray = ["Great Expectations", "The Remains of the Day", "Peter Pan"];
+
+var myBox = {
+    height: 6,
+    width: 8,
+    length: 10,
+    volume: this.length * this.width * this.height,
+    material: 'cardboard',
+    contents: booksArray, // this is a reference to an external array! It doesn't create a new array copy
+    "# of stops": 3, // the property name can be a string!
+    destination1: "Orlando",
+    destination2: "Miami"
+};
+
+console.log(myBox.contents);
+
+myBox.width = 20000;
+
+console.log(myBox);
+myBox.contents.push("Pinoccio"); // we modified an external array!
+console.log(myBox.contents);
+
+// To access the object properties, use index with strings!
+myBox["width"]; // --> 20000
+console.log(myBox["width"]); // --> 20000
+console.log(myBox["# of stops"]); // with such property names (strings) you can only use a bracket notation
+
+console.log(myBox.volume);
+
+// we can avoid hard-coding the properties:
+for (var i = 1; i<myBox["# of stops"]; i++) {
+    console.log(myBox["destination"+i]);
+}
+
+delete myBox.contents; // --> true
+
+// but it's gonna return true even if we delete a property we never had:
+delete myBox.neverExistedProperty; // --> true
+
+myBox["# of books"] = 0;
+
+function addBook (box, name, writer) {
+    box["# of books"]++;
+    box["book" + box["# of books"]] = {title: name, author: writer};
+}
+
+addBook(myBox, "Great Expectations", "Charles Dickens");
+console.log(myBox);
+
+
+// EXERCISES:
+
+var vehicle1 = {
+  type: "Motorboat",
+  capacity: 6,
+  storedAt: "Ammunition Depot"
+};
+
+var vehicle2 = {
+  type: "Jet Ski",
+  capacity: 1,
+  storedAt: "Reef Dock"
+};
+
+var vehicle3 = {
+  type: "Submarine",
+  capacity: 8,
+  storedAt: "Underwater Outpost"
+};
+
+
+// create vehicles array
+var vehicles = [vehicle1, vehicle2, vehicle3];
+
+// build findVehicle function expression
+var findVehicle = function(name, list) {
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].type == name) {
+        return list[i].storedAt;
+    }
+  }
+};
+
+// call findVehicle
+findVehicle("Submarine", vehicles);
+
+// add and adjust object properties here
+vehicle1.capacity += 4;
+vehicle2.submersible = false;
+vehicle3.weapon = "Torpedoes";
+vehicle1.submersible = false;
+vehicle2.weapon = "Lasers";
+vehicle3.capacity = 16;
+vehicle1.weapon = "Rear-Mounted Slingshot";
+vehicle3.submersible = true;
+
+// add properties and assign values
+vehicle3["# of weapons"] = 8;
+vehicle2["# of weapons"] = 4;
+vehicle1["# of weapons"] = 1;
+
+// Blinders On!
+var superBlinders = [
+  ["Firelight", 4000],
+  ["Solar Death Ray", 6000],
+  ["Supernova", 12000]
+];
+
+var lighthouseRock = {
+  gateClosed: true,
+  bulbs: [200, 500, 750],
+  capacity: 30,
+  secretPassageTo: "Underwater Outpost",
+};
+
+// remove bulbs property from lighthouseRock
+delete lighthouseRock.bulbs;
+
+// add weaponBulbs property to lighthouseRock
+lighthouseRock.weaponBulbs = superBlinders;
+
+// log the correct weaponBulbs array value to the console
+console.log(lighthouseRock.weaponBulbs[2][1]);
+
+
+
+
+
+
+// To the lighthouse, quick!!
+
+var superBlinders = [ ["Firestorm", 4000], ["Solar Death Ray", 6000], ["Supernova", 12000] ];
+
+var lighthouseRock = {
+  gateClosed: true,
+  weaponBulbs: superBlinders,
+  capacity: 30,
+  secretPassageTo: "Underwater Outpost",
+  numRangers: 0
+};
+
+function addRanger(location, name, skillz, station) {
+  // increment the number of rangers property
+  location.numRangers++;
+  // add the ranger<number> property and assign a ranger object
+  location["ranger" + location.numRangers] = {
+    name: name,
+    skillz: skillz,
+    station: station
+    };
+    console.log(location["ranger" + location.numRangers]);
+}
+
+// call addRanger three times to add the new rangers
+addRanger(lighthouseRock, "Nick Walsh", "magnification burn", 2);
+addRanger(lighthouseRock, "Drew Barontini", "uppercut launch", 3);
+addRanger(lighthouseRock, "Christine Wong", "bomb defusing", 1);
+
+console.log(lighthouseRock.numRangers); // --> 3
+console.log(lighthouseRock.ranger1);
+
+
+
+
+
+// Man your bulb station!
+var superBlinders = [ ["Firestorm", 4000], ["Solar Death Ray", 6000], ["Supernova", 12000] ];
+
+var lighthouseRock = {
+  gateClosed: true,
+  weaponBulbs: superBlinders,
+  capacity: 30,
+  secretPassageTo: "Underwater Outpost",
+  numRangers: 3,
+  ranger1: {name: "Nick Walsh", skillz: "magnification burn", station: 2},
+  ranger2: {name: "Drew Barontini", skillz: "uppercut launch", station: 3},
+  ranger3: {name: "Christine Wong", skillz: "bomb defusing", station: 1}
+};
+
+function dontPanic(location) {
+  var list = "Avast, me hearties!\n" +
+             "There be Pirates nearby! Stations!\n";
+
+  // loop through the rangers and append to list
+  for (var i = 1; i <= location.numRangers; i++) {
+    var ranger = location["ranger" + i];
+    var numOfSuperBlinder = ranger.station - 1; // 2
+    list = list + ranger.name + ", man the " + location.weaponBulbs[numOfSuperBlinder][0] + "!\n";
+  }
+
+  console.log(list);
+}
+
+dontPanic(lighthouseRock);
+
+
+</script>
+
+</body>
+</html>
