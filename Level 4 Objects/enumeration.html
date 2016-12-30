@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Object enumeration</title>
+</head>
+<body>
+
+<h1>For-in loop</h1>
+<p>Since objects are not arrays, we can't use .length property to loop through them.  So we use a special loop instead: a for-in loop.</p>
+
+<script>
+
+var aquarium = {
+    Nemo: { type: "fish", species: "clownfish", length: 3.7 },
+    Dori: { type: "fish", species: "somefish", length: 4 },
+    Star: { type: "echinoderm", species: "starfish", length: 3.5 },
+    addCritter: function(name, type, species, length) {
+        // only bracket notation works:
+        this[name] = {type: type, species: species, length: length };
+    },
+    deleteItem: function(name) {
+        // we want to hold on to this deleted object
+        this[name].name = name;
+        var temp = this[name];
+        delete this[name];
+        return temp;
+    }
+};
+
+// if we want to count all 'fish', we can't use .length property.  We use a for-in loop instead:
+// also, remember, loops don't create local scope
+aquarium.countFish = function() {
+    var numFish = 0;
+    for (key in this) {
+    // key is like an index of an array
+        console.log(key); // --> Nemo, Dori, Star, addCritter, deleteItem
+        if (this[key].type === 'fish') {
+            numFish++;
+        }
+    }
+    console.log(numFish);
+    return numFish;
+}
+
+aquarium.countFish();
+
+// note that:
+// aquarium[addCritter].type; // --> undefined
+// so it will not count it --> false
+
+var rockSpearguns = {
+  Sharpshooter: {barbs: 2, weight: 10, heft: "overhand"},
+  Pokepistol: {barbs: 4, weight: 8, heft: "shoulder"},
+  Javelinjet: {barbs: 4, weight: 12, heft: "waist"},
+  Firefork: {barbs: 6, weight: 8, heft: "overhand"},
+  "The Impaler": {barbs: 1, weight: 30, heft: "chest"}
+};
+
+// build listGuns
+function listGuns(guns) {
+    for (speargun in guns) {
+        console.log('Behold! ' + speargun + ', with ' + guns[speargun].heft + ' heft!');
+    }
+}
+
+// call listGuns and pass in rockSpearguns
+listGuns(rockSpearguns);
+
+
+</script>
+</body>
+</html>
