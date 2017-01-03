@@ -68,6 +68,24 @@ function listGuns(guns) {
 listGuns(rockSpearguns);
 
 
+
+// Final challenge: let's make listGuns a part of our rockSpearguns object using only bracket notation!
+
+// convert listGuns function
+rockSpearguns["listGuns"] = function() {
+  for (var property in this) {
+    if (this[property]["heft"] !== undefined) {
+         console.log("Behold! " + property + ", with " +
+                this[property]["heft"] + " heft!");
+    }
+
+  }
+};
+
+// call listGuns using bracket notation on rockSpearguns
+rockSpearguns["listGuns"]();
+
+
 </script>
 </body>
 </html>

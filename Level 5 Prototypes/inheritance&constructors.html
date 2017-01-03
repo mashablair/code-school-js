@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inheritance and Constructors</title>
+</head>
+<body>
+
+<h1>A second way to build objects using Object.create() method.</h1>
+
+<script>
+
+var shoe = { size: 7, gender: "women", constructor: "slipper" };
+
+// the argument will be used as the prototype of the newly creted object
+var magicShoe = Object.create(shoe);
+
+console.log(magicShoe);
+
+// we can now add the additional properties we want:
+magicShoe.jewels = "ruby";
+magicShoe.travelAction = "click heels";
+magicShoe.actionsRequired = 3;
+
+console.log(magicShoe);
+
+// to find out if object is a prototype of the current object
+Object.prototype.isPrototypeOf(shoe); // --> true
+console.log(shoe.isPrototypeOf(magicShoe)); // --> true
+
+// Object --> shoe --> magicShoe
+
+console.log(Object.isPrototypeOf(magicShoe)); // --> false
+console.log(Object.prototype.isPrototypeOf(magicShoe)); // --> true
+
+function Shoe (shoeSize, shoeColor, shoeGenger, shoeConstruction, putOn, takeOff) {
+    this.size = shoeSize;
+    this.color = shoeColor;
+    this.genger = shoeGenger;
+    this.construction = shoeConstruction;
+}
+
+Shoe.prototype = {
+    // 'this' will refer to the instance object
+    putOn: function() {console.log('This ' + this.construction + ' is on!');},
+    takeOff: function() {
+        console.log('This ' + this.construction + ' is off.');
+        // return true; // optional
+    }
+};
+
+
+var beachShoe = new Shoe(7, "gold", "women", "flipflop");
+console.log(beachShoe);
+console.log(beachShoe.hasOwnProperty('construction')); // --> true
+console.log(beachShoe.hasOwnProperty('putOn')); // --> false
+
+console.log(beachShoe.takeOff());
+
+</script>
+
+</body>
+</html>
