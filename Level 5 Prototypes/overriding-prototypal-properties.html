@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Overriding Prototypal Methods</title>
+</head>
+<body>
+<h1>Useful Properties in the Object Prototype</h1>
+
+<script>
+
+// constructors can be function expressions too!
+var Tornado = function(category, affectedAreas, windGust) {
+    this.category = category;
+    this.affectedAreas = affectedAreas;
+    this.windGust = windGust;
+};
+
+var cities = [ ["Kansas City", 3737384], ["Topeka", 39438], ["Lenexa", 49473] ];
+
+var twister = new Tornado("F5", cities, 220);
+
+twister.valueOf(); // --> Tornado {category: "F5", affectedAreas: Array[3], windGust: 220}
+
+Tornado.prototype.valueOf = function() {
+    sum = 0;
+    for (var i = 0; i < this.affectedAreas.length; i++) {
+        sum = sum + this.affectedAreas[i][1];
+    }
+    return sum;
+};
+
+// another method
+// toString()
+
+var double = function (param) {
+    return param * 2;
+};
+
+double.toString(); // --> "function (param) { return param * 2; }"
+
+Tornado.prototype.toString = function() {
+    var list = "";
+    for (var i = 0; i<this.affectedAreas.length; i++) {
+        if (i < this.affectedAreas.length - 1) {
+            list = list + this.affectedAreas[i][0] + ", ";
+        } else {
+            list = list + " and " + this.affectedAreas[i][0];
+        }
+    }
+    return "This tornado has been clasified as an " + this.category + ", with wind gusts up to " + this.windGust + "mph.  Affected areas are: " + list + ", potentially affecting a population of " + this.valueOf() + ".";
+};
+
+// let's build a function that will show us if object has its own properties/methods:
+Object.prototype.findOwnerProperty = function (propertyName) {
+    var properties = [];
+    for (var i = 0; i<this.length; i++) {
+        if (this[i].propertyName == this.hasOwnProperty()) {
+            properties.push(this[i]);
+        }
+    }
+    return properties;
+};
+
+
+// USE THIS METHOD!
+// Instructor's method.
+Object.prototype.findOwnerProperty = function(propName) {
+    var currentObject = this;
+    while (currentObject !== null) {
+        if (currentObject.hasOwnProperty(propName)) {
+            return currentObject;
+        } else {
+            currentObject = currentObject.__proto__;
+        }
+    }
+    return "No property found!";
+};
+
+twister.findOwnerProperty("valueOf");
+
+</script>
+</body>
+</html>

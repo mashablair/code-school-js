@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing valueOf that has been overriden</title>
+</head>
+<body>
+
+
+<script>
+
+function Fencepost(x, y, postNum) {
+  this.x = x;
+  this.y = y;
+  this.postNum = postNum;
+  this.connectionsTo = [];
+}
+
+Fencepost.prototype = {
+  sendRopeTo: function(connectedPost) {
+    this.connectionsTo.push(connectedPost);
+  },
+
+  removeRope: function(removeTo) {
+    var temp = [];
+    for (var i = 0; i < this.connectionsTo.length; i++) {
+      if (this.connectionsTo[i].postNum != removeTo) {
+        temp.push(this.connectionsTo[i]);
+      }
+    }
+    this.connectionsTo = temp;
+  },
+
+  movePost: function(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+};
+
+var post1 = new Fencepost(1,2,3);
+var post2 = new Fencepost(2,3,4);
+
+post1.sendRopeTo(post2);
+post2.sendRopeTo(post1);
+
+console.log(post1.valueOf()); // --> same Fencepost object
+
+// Let's override .valueOf for Fencepost:
+Fencepost.prototype.valueOf = function() {
+  return Math.sqrt((this.x * this.x) + (this.y * this.y));
+};
+
+
+console.log(post1); // --> Fencepost object
+console.log(post1.valueOf()); // --> 2.2360...
+
+// all is working here!
+
+// Now let's override toString method!
+// override the toString method
+Fencepost.prototype.toString = function() {
+    var list = '';
+  for (var i=0; i<this.connectionsTo.length; i++) {
+    list += this.connectionsTo[i].postNum + "\n";
+  }
+  return "Fence post #" + this.postNum + ":\nConnected to posts:\n" + list + "\nDistance from ranch: " + this.valueOf() + " yards";
+};
+
+console.log(post1.toString()); // --> :)
+
+
+
+
+
+
+</script>
+</body>
+</html>
