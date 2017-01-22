@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Conditionals</title>
+</head>
+<body>
+
+
+<script>
+
+// 1.
+// Print only EVEN numbers
+var num = 10;
+
+while (num > 0) {
+  if (num % 2 == 0) {
+    console.log(num);
+  }
+  num--;
+}
+
+
+// 2.
+//
+var parkIsOpen = true;
+
+if (parkIsOpen) {
+  console.log("Welcome to the Badlands National Park! Try to enjoy your stay.");
+} else {
+    console.log("Sorry, the Badlands are particularly bad today. We're closed!");
+}
+
+
+// 3.
+// If number of sheep more than 10,000, send half to other region:
+var numSheep = 4;
+var monthsToPrint = 12;
+
+for (var monthNumber = 1; monthNumber <= monthsToPrint; monthNumber++) {
+
+  if (numSheep >= 10000) {
+    numSheep /= 2;
+    console.log("Removing " + numSheep + " sheep from the population.");
+  }
+
+  numSheep *= 4;
+  console.log("There will be " + numSheep + " sheep after " + monthNumber + " month(s)!");
+}
+
+
+
+// 4.
+// Multiple conditionals
+var numSheep1 = 4;
+var monthsToPrint1 = 12;
+
+for (var monthNumber1 = 1; monthNumber1 <= monthsToPrint1; monthNumber1++) {
+
+  if (monthNumber1 % 4 == 0) {
+    numSheepToRemove = numSheep1 * 0.75;
+    console.log("Removing " + numSheepToRemove + " sheep from the population.");
+    numSheep1 -= numSheepToRemove;
+
+  } else if (numSheep1 >= 10000) {
+    numSheep1 /= 2;
+    console.log("Removing " + numSheep1 + " sheep from the population.");
+  }
+
+  numSheep1 *= 4;
+  console.log("There will be " + numSheep1 + " sheep after " + monthNumber1 + " month(s)!");
+}
+
+
+
+// 5.
+// Even more complex conditionals.  Make all code in 1 for loop.
+var totalGen = 19;
+var totalMW = 0;
+
+for (var i = 1; i <= totalGen; i++) {
+  if (i % 2 !== 0) {
+    console.log("Generator #" + i + " is off");
+  } else if (i <= 4) {
+    totalMW += 62;
+    console.log("Generator #" + i + " is on, adding 62 MW, for a total of " + totalMW + " MW!");
+  } else if (i <= totalGen) {
+    totalMW += 124;
+    console.log("Generator #" + i + " is on, adding 124 MW, for a total of " + totalMW + " MW!");
+  }
+}
+
+</script>
+</body>
+</html>

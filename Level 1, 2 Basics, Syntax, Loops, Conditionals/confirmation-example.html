@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>A Confirmation Loop</title>
+</head>
+<body>
+
+
+<script>
+// Use this loop
+var gotName = false;
+
+while (gotName == false) {
+    var userName = prompt("Yo passenger! What's your name?");
+
+    if (confirm("Is your name really " + userName + "?")) {
+        console.log("Welcome, " + userName + "!");
+        gotName = true;
+    }
+}
+
+
+// just an example of while loop
+var coolNames = ['Sophie', 'Masha', 'Elijah', 'Dida'];
+var i = 0;
+var text = '';
+
+while (coolNames[i]) {
+    // text += coolNames[i] + '<br>';
+    // document.write(text);
+    document.write(coolNames[i] + '<br>');
+    i++;
+}
+
+
+// 2 pop-up windows
+var userAge = prompt("What's your age, user?");
+var ageIsCorrect = confirm("You entered " + userAge + ". Is this correct?");
+
+
+
+
+</script>
+
+</body>
+</html>

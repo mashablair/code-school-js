@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Built-in Functions.</title>
+</head>
+<body>
+
+
+<script>
+
+// confirm("Yo, are you sure?");
+
+// --> OK means 'True'
+// --> Cancel means 'False'
+
+
+var answer = prompt('Who are you?');
+
+if (answer == 'Masha') {
+    console.log('Nice to meet you, Masha.');
+    var annoyingGreeting = confirm("Are you sure your name is " + answer + "?");
+    if (annoyingGreeting) {
+        console.log("I'm just messing with you, " + answer + ". :)");
+    }
+} else {
+    var difAnswer = prompt("You are not Masha!  Who are you?");
+    console.log("Welcome anyway, " + difAnswer + "! :)");
+    var annoyingGreeting = confirm("Are you sure your name is " + difAnswer + "?");
+    if (annoyingGreeting) {
+        console.log("I'm just messing with you, " + difAnswer + "!");
+    }
+}
+
+
+
+
+
+</script>
+</body>
+</html>
