@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Arrays</title>
+</head>
+<body>
+
+<script>
+
+var passengers = ['Greg', 'Sophie', 'Masha', 'Elijah', 'Erick', 'Laura', 'Ale'];
+
+console.log(passengers.length);
+
+console.log(passengers[4] = 'Mofik');
+
+console.log(passengers[4]);
+
+for (var i = 0; i<passengers.length; i++) {
+    console.log(passengers[i]);
+}
+
+passengers.pop();
+
+console.log(passengers);
+
+passengers.push('Ale');
+
+console.log(passengers);
+
+// arrays accept variables
+var delicatesse = 'fish';
+
+passengers.push(delicatesse);
+
+console.log(passengers);
+
+// if array contains other arrays
+var secondArray = ['fish', 'chicken', 'beef'];
+
+passengers.push(secondArray);
+
+console.log(passengers);
+console.log(passengers.length);
+console.log(passengers[8]);
+console.log(passengers[8][1]); // --> chicken
+
+function makeList(array) {
+    for (var i = 0; i<array.length; i++) {
+        console.log("The value in cell " + i + " is " + array[i]);
+    }
+}
+
+makeList(passengers);
+
+
+// A new function w/ arrays
+var numbers = [1,2,3,4,5,6,7,8,9];
+var evenCount = 0;
+for (var i = 0; i<numbers.length; i++) {
+    if (numbers[i] % 2 == 0) {
+        evenCount++;
+    } else {
+        numbers[i] = undefined; // it erases all odds but keeps their spots (length is still the same)
+    }
+}
+
+console.log(evenCount);
+console.log(numbers);
+
+
+// function to keep track of passengers
+function addPassenger (passenger, arrayOfPassengers) {
+    if (arrayOfPassengers.length == 0) {
+        arrayOfPassengers.push(passenger);
+    } else {
+        for (var i = 0; i<arrayOfPassengers.length; i++) {
+            if (arrayOfPassengers[i] == undefined) {
+                arrayOfPassengers[i] = passenger;
+                // have to add 'return' to stop adding passenger to all empty spot of the array:
+                return arrayOfPassengers;
+            } else if (i == arrayOfPassengers.length-1) {
+                arrayOfPassengers.push(passenger);
+                return arrayOfPassengers;
+            }
+        }
+    }
+}
+
+addPassenger('Sophie', numbers);
+console.log(numbers);
+
+addPassenger('Sophie', passengers);
+console.log(passengers);
+
+var passengerList = [ ];
+addPassenger('Greg', passengerList);
+console.log(passengerList);
+
+
+// let's make another function deleting passengers
+function deletePassenger (passenger, arrayOfPassengers) {
+    if (arrayOfPassengers.length == 0) {
+        console.log("The passengers list is empty! Nothing to delete");
+    } else {
+        for (var i = 0; i<arrayOfPassengers.length; i++) {
+            if (arrayOfPassengers[i] == passenger) {
+                arrayOfPassengers[i] = undefined;
+                return arrayOfPassengers;
+            } else if (i == arrayOfPassengers.length - 1) {
+                console.log("This passenger is not on the list.");
+            }
+        }
+    }
+    return arrayOfPassengers;
+}
+
+deletePassenger('Sophie', passengers);
+console.log(passengers);
+
+addPassenger('Ninja', passengers);
+console.log(passengers);
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
