@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Functions Declarations</title>
+</head>
+<body>
+
+
+<script>
+
+// wrapping our code into a function to reuse it
+function sumOfCubes (a,b) {
+    var aCubed = a*a*a;
+    var bCubed = b*b*b;
+    var sum = aCubed + bCubed;
+    return sum;
+}
+
+var mySum = sumOfCubes(4,9);
+console.log(mySum); // --> 793
+
+
+// Let's make our function more consice
+function sumOfCubes2 (a,b) {
+    return a*a*a + b*b*b;
+}
+
+
+// Parameters can also be expressions, which will be resolved before starting:
+console.log(sumOfCubes2(1+2, 3+5));
+
+// or
+var x = 3;
+console.log(sumOfCubes2(x*2, x*3));
+
+
+// Exercises
+// 1.
+function maxOf2 (a,b) {
+    if (a>=b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+
+// Let's combine our knowldege of built-in functions!
+function countE() {
+    var phrase = prompt("Please enter some cool phrase.");
+    if ( typeof(phrase) != "string") {
+        alert("You entered an invalid phrase!");
+        return false;
+    } else {
+        var counter = 0;
+        for (var i = 0; i < phrase.length; i++) {
+            if (phrase[i] == 'e' || phrase[i] == 'E') {
+                counter ++;
+            }
+        }
+        console.log("There are " + counter + " letter(s) e or E in your phrase.");
+        return true;
+    }
+}
+
+// alternatively
+// if (phrase.charAt(i) == 'e' || phrase.charAt(i) == 'E')
+
+countE();
+
+
+// Scope
+var x = 6;
+function add (a,b) {
+    x = a+b; // here we're messing with the global variable!! Otherwise, you have to declare it here with a 'var' keyword
+    return x;
+}
+
+console.log(add(1,2)); // --> 3
+console.log(x); // --> 3
+
+
+// Just a little function
+function feedPerRanger(population, rangers) {
+    var feedPerRanger = (population/rangers) * 2;
+    console.log("Each Park Ranger should load " + feedPerRanger + " lbs of feed today.");
+}
+
+
+
+</script>
+</body>
+</html>

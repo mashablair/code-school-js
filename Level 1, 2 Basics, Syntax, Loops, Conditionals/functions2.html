@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>More functions exercises</title>
+</head>
+<body>
+
+
+
+<script>
+
+function changePowerTotal (total, genId, genStatus, genPowerAmount) {
+  if (genStatus) {
+    total = total + genPowerAmount;
+    console.log("Generator #" + genId + " is now on, adding " + genPowerAmount + " MW, for a total of " + total + " MW!");
+  } else {
+    total = total - genPowerAmount;
+    console.log("Generator #" + genId + " is now off, removing " + genPowerAmount + " MW, for a total of " + total + " MW!");
+  }
+
+  return total;
+}
+
+changePowerTotal(100, 2, true, 50);
+changePowerTotal(100, 3, false, 50);
+
+</script>
+</body>
+</html>
